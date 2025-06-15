@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 	<!-- Base application theme. -->
-	<style name="Theme.RumiServer" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+	<style name="Theme.RumiServer" parent="Theme.MaterialComponents.DayNight.NoActionBar">
 		<!-- 主な色 -->
 		<item name="colorPrimary">@color/theme_color</item>
 		<item name="colorPrimaryVariant">@color/theme_color</item>

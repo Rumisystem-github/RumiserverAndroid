@@ -1,0 +1,133 @@
+package su.rumishistem.android.rumiserver.Activity.Home;
+
+import android.content.ComponentName;
+import android.content.Intent;
+import android.content.ServiceConnection;
+import android.os.Bundle;
+import android.os.IBinder;
+import android.view.MenuItem;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.android.material.navigation.NavigationView;
+
+import java.util.concurrent.CountDownLatch;
+
+import su.rumishistem.android.rumiserver.IForegrondService;
+import su.rumishistem.android.rumiserver.R;
+
+public class HomeActivity extends AppCompatActivity {
+	private HomeActivity Context = this;
+	private IForegrondService AIDLInterface;
+	private DrawerLayout DL;
+	private ActionBarDrawerToggle Toggle;
+
+	private JsonNode SelfUser;
+
+	private ServiceConnection AIDL = new ServiceConnection() {
+		@Override
+		public void onServiceConnected(ComponentName Name, IBinder iBinder) {
+			AIDLInterface = IForegrondService.Stub.asInterface(iBinder);
+
+			try {
+				SelfUser = new ObjectMapper().readTree(AIDLInterface.getSelf());
+
+				runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						ChangeFragment(new TopFragment(Context));
+					}
+				});
+			} catch (Exception EX) {
+				EX.printStackTrace();
+			}
+		}
+
+		@Override
+		public void onServiceDisconnected(ComponentName Name) {
+			AIDLInterface = null;
+			System.out.println("サービス切断");
+		}
+	};
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+
+		//サービスへ接続
+		Intent AIDLIntent = new Intent("su.rumishistem.android.rumiserver.AIDL");
+		AIDLIntent.setPackage("su.rumishistem.android.rumiserver");
+		bindService(AIDLIntent, AIDL, Context.BIND_AUTO_CREATE);
+	}
+
+	@Override
+	protected void onStop() {
+		super.onStop();
+		unbindService(AIDL);
+	}
+
+	@Override
+	protected void onCreate(Bundle SavedInstanceState) {
+		super.onCreate(SavedInstanceState);
+
+		//UI
+		setContentView(R.layout.home_activity);
+
+		Toolbar TB = findViewById(R.id.HomeToolbar);
+		setSupportActionBar(TB);
+
+		DL = findViewById(R.id.HomeDrawableLayout);
+		NavigationView NavView = findViewById(R.id.HomeNavView);
+
+		Toggle = new ActionBarDrawerToggle(
+			Context,
+			DL,
+			TB,
+			R.string.plzwait,
+			R.string.app_name
+		);
+		DL.addDrawerListener(Toggle);
+		Toggle.syncState();
+
+		NavView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+			@Override
+			public boolean onNavigationItemSelected(@NonNull MenuItem Item) {
+				androidx.fragment.app.Fragment Fragment = null;
+				int ItemID = Item.getItemId();
+
+				if (ItemID == R.id.homeTopActivity) {
+					Fragment = new TopFragment(Context);
+				} else if (ItemID == R.id.homeSettingActivity) {
+					Fragment = new SettingFragment();
+				}
+
+				if (Fragment != null) {
+					ChangeFragment(Fragment);
+				}
+
+				DL.closeDrawer(GravityCompat.START);
+				return true;
+			}
+		});
+	}
+
+	private void ChangeFragment(androidx.fragment.app.Fragment Fragment) {
+		if (Fragment == null) throw new Error("フラグメントがNull");
+
+		getSupportFragmentManager()
+				.beginTransaction()
+				.replace(R.id.content_frame, Fragment)
+				.commit();
+	}
+
+	public JsonNode getSelfUser() {
+		return SelfUser;
+	}
+}

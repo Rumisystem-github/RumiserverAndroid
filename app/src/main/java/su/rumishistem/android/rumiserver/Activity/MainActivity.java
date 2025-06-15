@@ -9,6 +9,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import su.rumishistem.android.rumiserver.Activity.Home.HomeActivity;
 import su.rumishistem.android.rumiserver.ForegroundService.ForegroundService;
 import su.rumishistem.android.rumiserver.Module.TokenManager;
 import su.rumishistem.android.rumiserver.Module.UserIconManager;
@@ -24,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
 		Context = this;
 
 		//UI
-		getSupportActionBar().hide();
+		//getSupportActionBar().hide();
 		setContentView(R.layout.main_activity);
 
 		SharedPreferences PREF = Context.getSharedPreferences(TokenManager.PrefName, Context.MODE_PRIVATE);

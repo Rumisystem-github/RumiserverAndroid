@@ -7,4 +7,6 @@
 	<string name="password">パスワード</string>
 	<string name="home">ホーム</string>
 	<string name="plzwait">お待ちください</string>
+	<string name="top">トップ</string>
+	<string name="setting">設定</string>
 </resources>
