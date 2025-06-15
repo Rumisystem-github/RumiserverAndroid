@@ -1,0 +1,48 @@
+plugins {
+	alias(libs.plugins.android.application)
+}
+
+android {
+	namespace 'su.rumishistem.android.rumiserver'
+	compileSdk 34
+
+	defaultConfig {
+		applicationId "su.rumishistem.android.rumiserver"
+		minSdk 24
+		targetSdk 34
+		versionCode 1
+		versionName "1.0"
+
+		testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+	}
+
+	buildTypes {
+		release {
+			minifyEnabled false
+			proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+		}
+	}
+	compileOptions {
+		sourceCompatibility JavaVersion.VERSION_1_8
+		targetCompatibility JavaVersion.VERSION_1_8
+	}
+	buildFeatures {
+		aidl true
+	}
+	sourceSets {
+		main {
+			aidl.srcDirs = ["src/main/aidl"]
+		}
+	}
+}
+
+dependencies {
+
+	implementation libs.appcompat
+	implementation libs.material
+	testImplementation libs.junit
+	androidTestImplementation libs.ext.junit
+	androidTestImplementation libs.espresso.core
+	implementation("com.fasterxml.jackson.core:jackson-databind:2.16.0")
+	implementation("com.squareup.okhttp3:okhttp:4.12.0")
+}

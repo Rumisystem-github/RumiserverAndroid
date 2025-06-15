@@ -1,0 +1,33 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+	<!-- Base application theme. -->
+	<style name="Theme.RumiServer" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+		<!-- 主な色 -->
+		<item name="colorPrimary">@color/theme_color</item>
+		<item name="colorPrimaryVariant">@color/theme_color</item>
+		<item name="colorOnPrimary">@color/white</item>
+
+		<!-- 副の色 -->
+		<item name="colorSecondary">@color/theme_color_sec</item>
+		<item name="colorSecondaryVariant">@color/theme_color_sec</item>
+		<item name="colorOnSecondary">@color/black</item>
+
+		<!-- 上のバーの色 -->
+		<item name="android:statusBarColor">@color/theme_color</item>
+
+		<!--作ったテーマをばーん-->
+		<item name="materialButtonStyle">@style/Widget.Rumi.Button</item>
+		<item name="android:textViewStyle">@style/Widget.Rumi.TextView</item>
+	</style>
+
+	<!--テキスト-->
+	<style name="Widget.Rumi.TextView" parent="Widget.MaterialComponents.Button">
+		<item name="android:textColor">@color/black</item>
+	</style>
+
+	<!--ボタン-->
+	<style name="Widget.Rumi.Button" parent="Widget.MaterialComponents.Button">
+		<item name="backgroundTint">@color/theme_color_sec</item>
+		<item name="android:textColor">@color/black</item>
+		<item name="cornerRadius">0dp</item>
+	</style>
+</resources>

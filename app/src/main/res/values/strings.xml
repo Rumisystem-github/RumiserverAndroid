@@ -1,0 +1,10 @@
+<resources>
+	<string name="app_name">るみ鯖</string>
+	<string name="login">ログイン</string>
+	<string name="welcome">ようこそ</string>
+	<string name="regist_account">アカウント作成</string>
+	<string name="userid">ユーザーID</string>
+	<string name="password">パスワード</string>
+	<string name="home">ホーム</string>
+	<string name="plzwait">お待ちください</string>
+</resources>
