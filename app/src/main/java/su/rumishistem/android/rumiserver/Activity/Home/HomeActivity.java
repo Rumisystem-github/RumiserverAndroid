@@ -6,6 +6,9 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -21,6 +24,7 @@ import com.google.android.material.navigation.NavigationView;
 import java.util.concurrent.CountDownLatch;
 
 import su.rumishistem.android.rumiserver.IForegrondService;
+import su.rumishistem.android.rumiserver.Module.UserIconManager;
 import su.rumishistem.android.rumiserver.R;
 
 public class HomeActivity extends AppCompatActivity {
@@ -42,6 +46,18 @@ public class HomeActivity extends AppCompatActivity {
 				runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
+						//ナビゲーションメニューのヘッダーを取得
+						NavigationView NavView = findViewById(R.id.HomeNavView);
+						View HeaderView = NavView.getHeaderView(0);
+
+						//アイコン
+						ImageView UserIconView = HeaderView.findViewById(R.id.user_icon_imageview);
+						UserIconView.setImageBitmap(UserIconManager.Get(SelfUser.get("UID").asText()));
+
+						//名前
+						TextView UserNameView = HeaderView.findViewById(R.id.user_name_textview);
+						UserNameView.setText(SelfUser.get("NAME").asText());
+
 						ChangeFragment(new TopFragment(Context));
 					}
 				});
