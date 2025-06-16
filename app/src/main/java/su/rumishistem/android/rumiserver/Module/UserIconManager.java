@@ -1,6 +1,5 @@
 package su.rumishistem.android.rumiserver.Module;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.LruCache;
@@ -20,6 +19,10 @@ public class UserIconManager {
 				return BMP.getByteCount() / 1024;
 			}
 		};
+	}
+
+	public static void Clear(String UID) {
+		Cache.remove(Integer.toHexString(UID.hashCode()));
 	}
 
 	//ユーザーIDを入れろ

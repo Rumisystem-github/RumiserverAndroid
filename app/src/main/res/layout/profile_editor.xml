@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
 		android:layout_width="match_parent"
-		android:layout_height="match_parent">
+		android:layout_height="match_parent"
+		xmlns:tools="http://schemas.android.com/tools">
 	<LinearLayout
 			android:orientation="vertical"
 			android:layout_width="match_parent"
@@ -14,6 +15,16 @@
 					android:layout_width="match_parent"
 					android:layout_height="45sp"
 					android:id="@+id/apply_btn" />
+		</FrameLayout>
+
+		<FrameLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content">
+			<ImageView
+					android:layout_width="100sp"
+					android:layout_height="100sp"
+					tools:srcCompat="@tools:sample/avatars"
+					android:id="@+id/user_icon_imageview" />
 		</FrameLayout>
 
 		<!--ユーザー名-->

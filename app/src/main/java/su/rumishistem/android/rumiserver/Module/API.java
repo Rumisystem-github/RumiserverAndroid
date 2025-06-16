@@ -12,6 +12,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -50,34 +51,81 @@ public class API {
 	}
 
 	public static JsonNode RunPost(String Path, String Body, String Token) {
-		return SendBodyHTTP(Path, Body, "POST", new HashMap<String, String>(){
-			{
-				put("Content-Type", "application/json; charset=UTF-8");
-				put("Accept", "application/json");
+		try {
+			return SendBodyHTTP(Path, Body.getBytes(StandardCharsets.UTF_8), "POST", new HashMap<String, String>(){
+				{
+					put("Content-Type", "application/json; charset=UTF-8");
+					put("Accept", "application/json");
 
-				//トークン
-				if (Token != null) {
-					put("TOKEN", Token);
+					//トークン
+					if (Token != null) {
+						put("TOKEN", Token);
+					}
 				}
+			});
+		} catch (Exception EX) {
+			try {
+				HashMap<String, Object> Return = new HashMap<>();
+				Return.put("STATUS", false);
+				Return.put("ERR", "ANDROID_APP_ERR");
+				return new ObjectMapper().readTree(new ObjectMapper().writeValueAsString(Return));
+			} catch (Exception EX2) {
+				throw new Error("は。");
 			}
-		});
+		}
+	}
+
+	public static JsonNode RunPostByte(String Path, byte[] Body, String Token) {
+		try {
+			return SendBodyHTTP(Path, Body, "POST", new HashMap<String, String>(){
+				{
+					put("Content-Type", "application/json; charset=UTF-8");
+					put("Accept", "application/json");
+
+					//トークン
+					if (Token != null) {
+						put("TOKEN", Token);
+					}
+				}
+			});
+		} catch (Exception EX) {
+			try {
+				HashMap<String, Object> Return = new HashMap<>();
+				Return.put("STATUS", false);
+				Return.put("ERR", "ANDROID_APP_ERR");
+				return new ObjectMapper().readTree(new ObjectMapper().writeValueAsString(Return));
+			} catch (Exception EX2) {
+				throw new Error("は。");
+			}
+		}
 	}
 
 	public static JsonNode RunPatch(String Path, String Body, String Token) {
-		return SendBodyHTTP(Path, Body, "PATCH", new HashMap<String, String>(){
-			{
-				put("Content-Type", "application/json; charset=UTF-8");
-				put("Accept", "application/json");
+		try {
+			return SendBodyHTTP(Path, Body.getBytes(StandardCharsets.UTF_8), "PATCH", new HashMap<String, String>(){
+				{
+					put("Content-Type", "application/json; charset=UTF-8");
+					put("Accept", "application/json");
 
-				//トークン
-				if (Token != null) {
-					put("TOKEN", Token);
+					//トークン
+					if (Token != null) {
+						put("TOKEN", Token);
+					}
 				}
+			});
+		} catch (Exception EX) {
+			try {
+				HashMap<String, Object> Return = new HashMap<>();
+				Return.put("STATUS", false);
+				Return.put("ERR", "ANDROID_APP_ERR");
+				return new ObjectMapper().readTree(new ObjectMapper().writeValueAsString(Return));
+			} catch (Exception EX2) {
+				throw new Error("は。");
 			}
-		});
+		}
 	}
 
-	public static JsonNode SendBodyHTTP(String Path, String Body, String Method, HashMap<String, String> Header) {
+	public static JsonNode SendBodyHTTP(String Path, byte[] Body, String Method, HashMap<String, String> Header) {
 		try {
 			HttpURLConnection Connection = OpenConnection(Path);
 			Connection.setRequestMethod(Method);
@@ -89,7 +137,7 @@ public class API {
 
 			//JSONを送りつける
 			OutputStream OS = Connection.getOutputStream();
-			OS.write(Body.getBytes("UTF-8"));
+			OS.write(Body);
 			OS.flush();
 
 			//応答を取得
