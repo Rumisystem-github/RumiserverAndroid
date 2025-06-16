@@ -44,6 +44,10 @@
 				android:label="@string/home"
 				android:exported="false" />
 		<activity
+				android:name=".Activity.ProfileEditor"
+				android:label="@string/profile_edit"
+				android:exported="false" />
+		<activity
 				android:name=".Activity.WelcomeActivity"
 				android:label="@string/welcome"
 				android:exported="false" />

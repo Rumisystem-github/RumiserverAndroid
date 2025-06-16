@@ -12,15 +12,21 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.HashMap;
 
 import javax.net.ssl.HttpsURLConnection;
 
 public class API {
-	public static JsonNode RunGet(String Path) {
+	public static JsonNode RunGet(String Path, String Token) {
 		try {
 			HttpURLConnection Connection = OpenConnection(Path);
 			Connection.setRequestMethod("GET");
 			Connection.setRequestProperty("Accept", "application/json");
+
+			//トークン
+			if (Token != null) {
+				Connection.setRequestProperty("TOKEN", Token);
+			}
 
 			//応答を取得
 			int Code = Connection.getResponseCode();
@@ -43,13 +49,43 @@ public class API {
 		}
 	}
 
-	public static JsonNode RunPost(String Path, String Body) {
+	public static JsonNode RunPost(String Path, String Body, String Token) {
+		return SendBodyHTTP(Path, Body, "POST", new HashMap<String, String>(){
+			{
+				put("Content-Type", "application/json; charset=UTF-8");
+				put("Accept", "application/json");
+
+				//トークン
+				if (Token != null) {
+					put("TOKEN", Token);
+				}
+			}
+		});
+	}
+
+	public static JsonNode RunPatch(String Path, String Body, String Token) {
+		return SendBodyHTTP(Path, Body, "PATCH", new HashMap<String, String>(){
+			{
+				put("Content-Type", "application/json; charset=UTF-8");
+				put("Accept", "application/json");
+
+				//トークン
+				if (Token != null) {
+					put("TOKEN", Token);
+				}
+			}
+		});
+	}
+
+	public static JsonNode SendBodyHTTP(String Path, String Body, String Method, HashMap<String, String> Header) {
 		try {
 			HttpURLConnection Connection = OpenConnection(Path);
-			Connection.setRequestMethod("POST");
+			Connection.setRequestMethod(Method);
 			Connection.setDoOutput(true);
-			Connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-			Connection.setRequestProperty("Accept", "application/json");
+
+			for (String Key:Header.keySet()) {
+				Connection.setRequestProperty(Key, Header.get(Key));
+			}
 
 			//JSONを送りつける
 			OutputStream OS = Connection.getOutputStream();

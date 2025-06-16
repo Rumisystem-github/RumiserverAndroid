@@ -10,4 +10,5 @@ interface IForegrondService {
 	 */
 	void basicTypes(int anInt, long aLong, boolean aBoolean, float aFloat, double aDouble, String aString);
 	String getSelf();
+	String getToken();
 }

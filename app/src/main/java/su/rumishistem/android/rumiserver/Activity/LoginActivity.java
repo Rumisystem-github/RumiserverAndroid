@@ -79,7 +79,7 @@ public class LoginActivity extends AppCompatActivity {
 			@Override
 			public void run() {
 				try {
-					JsonNode Result = API.RunPost("Session", new ObjectMapper().writeValueAsString(PostBody));
+					JsonNode Result = API.RunPost("Session", new ObjectMapper().writeValueAsString(PostBody), null);
 
 					//失敗
 					if (!Result.get("STATUS").asBoolean()) {

@@ -9,4 +9,9 @@
 	<string name="plzwait">お待ちください</string>
 	<string name="top">トップ</string>
 	<string name="setting">設定</string>
+	<string name="open">開く</string>
+	<string name="close">閉じる</string>
+	<string name="username">ユーザー名</string>
+	<string name="apply">適用</string>
+	<string name="profile_edit">プロフィール編集</string>
 </resources>

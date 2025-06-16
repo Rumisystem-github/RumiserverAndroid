@@ -87,7 +87,7 @@ public class ForegroundService extends Service {
 	}
 
 	public JsonNode getSession() {
-		JsonNode Result = API.RunGet("Session?ID=" + URLEncoder.encode(getToken()));
+		JsonNode Result = API.RunGet("Session?ID=" + URLEncoder.encode(getToken()), null);
 		return Result;
 	}
 

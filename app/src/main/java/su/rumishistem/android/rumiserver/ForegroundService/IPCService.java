@@ -70,4 +70,9 @@ public class IPCService extends IForegrondService.Stub {
 			return "{}";
 		}
 	}
+
+	@Override
+	public String getToken() {
+		return FS.getToken();
+	}
 }
