@@ -17,7 +17,7 @@
 		<!--作ったテーマをばーん-->
 		<item name="materialButtonStyle">@style/Widget.Rumi.Button</item>
 		<item name="android:textViewStyle">@style/Widget.Rumi.TextView</item>
-		<item name="textInputStyle">@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox</item>
+		<item name="textInputStyle">@style/Widget.Rumi.TextInput</item>
 	</style>
 
 	<!--テキスト-->
@@ -30,5 +30,10 @@
 		<item name="backgroundTint">@color/theme_color_sec</item>
 		<item name="android:textColor">@color/black</item>
 		<item name="cornerRadius">0dp</item>
+	</style>
+
+	<style name="Widget.Rumi.TextInput" parent="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+		<!--<item name="boxStrokeColor"></item>-->
+		<!--メモ:https://felo.ai/search/S6hSDs3qhQ89cB3yWAhYoX-->
 	</style>
 </resources>
