@@ -17,6 +17,7 @@
 		<!--作ったテーマをばーん-->
 		<item name="materialButtonStyle">@style/Widget.Rumi.Button</item>
 		<item name="android:textViewStyle">@style/Widget.Rumi.TextView</item>
+		<item name="textInputStyle">@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox</item>
 	</style>
 
 	<!--テキスト-->
