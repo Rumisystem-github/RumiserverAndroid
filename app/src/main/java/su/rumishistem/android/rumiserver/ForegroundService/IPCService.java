@@ -11,14 +11,9 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
 import su.rumishistem.android.rumiserver.IForegrondService;
+import su.rumishistem.android.rumiserver.Module.GetAllowPackage;
 
 public class IPCService extends IForegrondService.Stub {
-	private static final List<String> AllowPackageName = new ArrayList<String>(){
-		{
-			add("su.rumishistem.android.rumiserver");
-		}
-	};
-
 	private ForegroundService FS;
 
 	public IPCService(ForegroundService Context) {
@@ -30,7 +25,7 @@ public class IPCService extends IForegrondService.Stub {
 		String[] PackageList = FS.getPackageManager().getPackagesForUid(getCallingUid());
 		if (PackageList != null) {
 			for (String Package : PackageList) {
-				if (AllowPackageName.contains(Package)) {
+				if (GetAllowPackage.isAllow(Package)) {
 					return super.onTransact(code, data, reply, flags);
 				}
 			}
