@@ -2,6 +2,7 @@ package su.rumishistem.android.rumiserver.Activity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -145,8 +146,18 @@ public class LoginActivity extends AppCompatActivity {
 					}
 
 					String Token = Result.get("SESSION_ID").asText();
-
 					TokenManager.SetToken(Context, "", Token);
+
+					//再起動
+					runOnUiThread(new Runnable() {
+						@Override
+						public void run() {
+							Intent RestartIntent = getBaseContext().getPackageManager().getLaunchIntentForPackage(getBaseContext().getPackageName());
+							RestartIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+							startActivity(RestartIntent);
+							Runtime.getRuntime().exit(0);
+						}
+					});
 				} catch (Exception EX) {
 					EX.printStackTrace();
 				}
