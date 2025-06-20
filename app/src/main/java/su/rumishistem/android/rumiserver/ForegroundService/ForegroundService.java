@@ -34,11 +34,12 @@ public class ForegroundService extends Service {
 	private WebSocketService WSS = null;
 	protected boolean Destroy = false;
 
-	private final IForegrondService.Stub Binder = new IPCService(this);
+	//private final IForegrondService.Stub Binder = new IPCService(this);
 
 	@Override
 	public IBinder onBind(Intent INT) {
-		return Binder;
+		//return Binder;
+		return null;
 	}
 
 	@Override
@@ -77,6 +78,12 @@ public class ForegroundService extends Service {
 		//WebSocket
 		WSS = new WebSocketService();
 		WSS.Start(Context);
+
+		try {
+			new HTTPServer(3000, Context).start();
+		} catch (Exception EX) {
+			EX.printStackTrace();
+		}
 
 		return START_STICKY;
 	}

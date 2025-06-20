@@ -31,12 +31,12 @@ import java.util.concurrent.CountDownLatch;
 
 import su.rumishistem.android.rumiserver.Activity.ProfileEditor;
 import su.rumishistem.android.rumiserver.IForegrondService;
+import su.rumishistem.android.rumiserver.Module.IPCHTTP;
 import su.rumishistem.android.rumiserver.Module.UserIconManager;
 import su.rumishistem.android.rumiserver.R;
 
 public class HomeActivity extends AppCompatActivity {
 	private HomeActivity Context = this;
-	private IForegrondService AIDLInterface;
 	private DrawerLayout DL;
 	private ActionBarDrawerToggle Toggle;
 	private ActivityResultLauncher<Intent> ResultLauncher;
@@ -44,59 +44,14 @@ public class HomeActivity extends AppCompatActivity {
 	private JsonNode SelfUser;
 	private String Token;
 
-	private ServiceConnection AIDL = new ServiceConnection() {
-		@Override
-		public void onServiceConnected(ComponentName Name, IBinder iBinder) {
-			AIDLInterface = IForegrondService.Stub.asInterface(iBinder);
-
-			try {
-				SelfUser = new ObjectMapper().readTree(AIDLInterface.getSelf());
-				Token = AIDLInterface.getToken();
-
-				runOnUiThread(new Runnable() {
-					@Override
-					public void run() {
-						//ナビゲーションメニューのヘッダーを取得
-						NavigationView NavView = findViewById(R.id.HomeNavView);
-						View HeaderView = NavView.getHeaderView(0);
-
-						//アイコン
-						ImageView UserIconView = HeaderView.findViewById(R.id.user_icon_imageview);
-						UserIconView.setImageBitmap(UserIconManager.Get(SelfUser.get("UID").asText()));
-
-						//名前
-						TextView UserNameView = HeaderView.findViewById(R.id.user_name_textview);
-						UserNameView.setText(SelfUser.get("NAME").asText());
-
-						ChangeFragment(new TopFragment(Context));
-					}
-				});
-			} catch (Exception EX) {
-				EX.printStackTrace();
-			}
-		}
-
-		@Override
-		public void onServiceDisconnected(ComponentName Name) {
-			AIDLInterface = null;
-			System.out.println("サービス切断");
-		}
-	};
-
 	@Override
 	protected void onStart() {
 		super.onStart();
-
-		//サービスへ接続
-		Intent AIDLIntent = new Intent("su.rumishistem.android.rumiserver.AIDL");
-		AIDLIntent.setPackage("su.rumishistem.android.rumiserver");
-		bindService(AIDLIntent, AIDL, Context.BIND_AUTO_CREATE);
 	}
 
 	@Override
 	protected void onStop() {
 		super.onStop();
-		unbindService(AIDL);
 	}
 
 	@Override
@@ -153,6 +108,33 @@ public class HomeActivity extends AppCompatActivity {
 				return true;
 			}
 		});
+
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				SelfUser = IPCHTTP.getSelf();
+				Token = IPCHTTP.getToken();
+
+				runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						//ナビゲーションメニューのヘッダーを取得
+						NavigationView NavView = findViewById(R.id.HomeNavView);
+						View HeaderView = NavView.getHeaderView(0);
+
+						//アイコン
+						ImageView UserIconView = HeaderView.findViewById(R.id.user_icon_imageview);
+						UserIconView.setImageBitmap(UserIconManager.Get(SelfUser.get("UID").asText()));
+
+						//名前
+						TextView UserNameView = HeaderView.findViewById(R.id.user_name_textview);
+						UserNameView.setText(SelfUser.get("NAME").asText());
+
+						ChangeFragment(new TopFragment(Context));
+					}
+				});
+			}
+		}).start();
 	}
 
 	private void ChangeFragment(androidx.fragment.app.Fragment Fragment) {
