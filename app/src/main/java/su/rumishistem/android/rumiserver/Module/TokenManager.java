@@ -27,13 +27,13 @@ import javax.crypto.spec.SecretKeySpec;
 import su.rumishistem.android.rumiserver.Activity.LoginActivity;
 
 public class TokenManager {
-	public static final String PrefName = "secure_pref";
+	public static final String PrefName = "token";
 
 	public static void SetToken(LoginActivity Context, String UID, String Token) {
 		try {
 			//保存
 			SharedPreferences PREF = Context.getSharedPreferences(PrefName, Context.MODE_PRIVATE);
-			PREF.edit().putString("TOKEN", Token).apply();
+			PREF.edit().putString("TOKEN", Token).commit();
 		} catch (Exception EX) {
 			EX.printStackTrace();
 			throw new Error("登録中にエラー");
