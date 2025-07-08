@@ -5,7 +5,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class GetAPIHost {
-	private static final String HTTPHost = "https://account.rumiserver.com/api";
+	private static final String HTTPHost = "https://account.rumiserver.com/api/";
 	private static final String HTTPLocalHost = "http://192.168.0.125:3000/";
 
 	private static final String WSHost = "wss://account.rumiserver.com/api/ws";

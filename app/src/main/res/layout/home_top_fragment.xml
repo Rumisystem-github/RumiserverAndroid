@@ -34,13 +34,26 @@ android:layout_height="match_parent">
 	</FrameLayout>
 	<FrameLayout
 			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:layout_weight="10">
+			android:layout_height="wrap_content">
+		<LinearLayout
+				android:orientation="horizontal"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent">
+			<TextView
+					android:text="フォロー N人"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:id="@+id/following_count" />
+			<TextView
+					android:text="フォロワー N人"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:id="@+id/follower_count" />
+		</LinearLayout>
 	</FrameLayout>
 	<FrameLayout
 			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:layout_weight="10">
+			android:layout_height="match_parent">
 	</FrameLayout>
 </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

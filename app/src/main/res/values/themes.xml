@@ -23,6 +23,7 @@
 	<!--テキスト-->
 	<style name="Widget.Rumi.TextView" parent="Widget.MaterialComponents.Button">
 		<item name="android:textColor">@color/black</item>
+		<item name="textAllCaps">false</item>
 	</style>
 
 	<!--ボタン-->
