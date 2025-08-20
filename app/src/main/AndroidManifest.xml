@@ -19,6 +19,15 @@
 			android:usesCleartextTraffic="true"
 			android:theme="@style/Theme.RumiServer">
 
+		<receiver
+				android:name=".BootReceiver"
+				android:enabled="true"
+				android:exported="true">
+			<intent-filter>
+				<action android:name="android.intent.action.BOOT_COMPLETED"/>
+			</intent-filter>
+		</receiver>
+
 		<service
 				android:name=".ForegroundService.ForegroundService"
 				android:exported="true"

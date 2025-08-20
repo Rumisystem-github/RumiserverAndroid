@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 	//サービスが起動しているかチェック
-	private boolean isServiceRunning(Class<?> ServiceClass) {
+	public boolean isServiceRunning(Class<?> ServiceClass) {
 		ActivityManager Manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
 		for (ActivityManager.RunningServiceInfo Service:Manager.getRunningServices(Integer.MAX_VALUE)) {
 			if (ServiceClass.getName().equals(Service.service.getClassName())) {
