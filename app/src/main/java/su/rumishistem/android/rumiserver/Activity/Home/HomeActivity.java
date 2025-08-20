@@ -112,8 +112,8 @@ public class HomeActivity extends AppCompatActivity {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				SelfUser = IPCHTTP.getSelf();
-				Token = IPCHTTP.getToken();
+				SelfUser = IPCHTTP.getSelf(Context);
+				Token = IPCHTTP.getToken(Context);
 
 				runOnUiThread(new Runnable() {
 					@Override
