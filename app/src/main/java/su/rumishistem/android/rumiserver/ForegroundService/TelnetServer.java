@@ -23,6 +23,8 @@ import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import su.rumishistem.android.rumiserver.Module.AuthManager;
+
 public class TelnetServer {
 	public static final String AUTH_DIALOG_RESULT_INTENT = "su.rumishistem.AUTH_RESULT";
 
@@ -38,7 +40,7 @@ public class TelnetServer {
 			es.submit(new Runnable() {
 				@Override
 				public void run() {
-					String package_name = null;
+					String[] package_name = {null};
 
 					try {
 						BufferedReader in = new BufferedReader(new InputStreamReader(session.getInputStream()));
@@ -55,7 +57,7 @@ public class TelnetServer {
 										break;
 									}
 
-									package_name = cmd[1];
+									package_name[0] = cmd[1];
 									out.println("200");
 									break;
 								}
@@ -74,6 +76,7 @@ public class TelnetServer {
 
 											if (result) {
 												status[0] = "OK";
+												//token[0] = AuthManager.regist(ctx, package_name[0]);
 												token[0] = parent.getToken();
 											}
 
@@ -89,7 +92,7 @@ public class TelnetServer {
 
 									Intent intent = new Intent(ctx.getApplication(), AuthDialog.class);
 									intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-									intent.putExtra("PKG", package_name);
+									intent.putExtra("PKG", package_name[0]);
 									ctx.getApplication().startActivity(intent);
 									break;
 								}
