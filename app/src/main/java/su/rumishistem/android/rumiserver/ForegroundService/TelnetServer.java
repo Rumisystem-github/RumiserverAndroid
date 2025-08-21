@@ -1,5 +1,9 @@
 package su.rumishistem.android.rumiserver.ForegroundService;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -8,6 +12,7 @@ import android.content.IntentFilter;
 import android.content.SyncStatusObserver;
 import android.os.Build;
 
+import androidx.core.app.NotificationCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import java.io.BufferedReader;
@@ -24,6 +29,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import su.rumishistem.android.rumiserver.Module.AuthManager;
+import su.rumishistem.android.rumiserver.R;
 
 public class TelnetServer {
 	public static final String AUTH_DIALOG_RESULT_INTENT = "su.rumishistem.AUTH_RESULT";
@@ -90,10 +96,7 @@ public class TelnetServer {
 									};
 									lbm.registerReceiver(receiver, new IntentFilter(AUTH_DIALOG_RESULT_INTENT));
 
-									Intent intent = new Intent(ctx.getApplication(), AuthDialog.class);
-									intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-									intent.putExtra("PKG", package_name[0]);
-									ctx.getApplication().startActivity(intent);
+									parent.show_auth_notify(package_name[0]);
 									break;
 								}
 
