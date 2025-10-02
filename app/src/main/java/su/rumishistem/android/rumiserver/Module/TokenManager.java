@@ -1,6 +1,9 @@
 package su.rumishistem.android.rumiserver.Module;
 
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.security.keystore.KeyGenParameterSpec;
 import android.security.keystore.KeyProperties;
 import android.util.Base64;
@@ -17,6 +20,7 @@ import java.security.NoSuchProviderException;
 import java.security.UnrecoverableEntryException;
 import java.security.cert.CertificateException;
 import java.util.Arrays;
+import java.util.UUID;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
@@ -25,31 +29,30 @@ import javax.crypto.spec.GCMParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 import su.rumishistem.android.rumiserver.Activity.LoginActivity;
+import su.rumishistem.android.rumiserver.ForegroundService.SQL;
 
 public class TokenManager {
-	public static final String PrefName = "token";
-
-	public static void SetToken(LoginActivity Context, String UID, String Token) {
-		try {
-			//保存
-			SharedPreferences PREF = Context.getSharedPreferences(PrefName, Context.MODE_PRIVATE);
-			PREF.edit().putString("TOKEN", Token).commit();
-		} catch (Exception EX) {
-			EX.printStackTrace();
-			throw new Error("登録中にエラー");
-		}
+	public static void set_token(Context ctx, String uid, String token) {
+		SQLiteDatabase db = new SQL(ctx).getWritableDatabase();
+		db.execSQL("INSERT INTO `ACCOUNT` (`ID`, `UID`, `TOKEN`) VALUES (?, ?, ?);", new Object[]{
+			UUID.randomUUID().toString(),
+			uid,
+			token
+		});
 	}
 
-	public static boolean isLogin(SharedPreferences PREF) {
-		String TokenBase64 = PREF.getString("TOKEN", null);
-		return (TokenBase64 != null);
+	public static boolean is_logined(Context ctx) {
+		SQLiteDatabase db = new SQL(ctx).getWritableDatabase();
+		Cursor c = db.rawQuery("SELECT * FROM `ACCOUNT`;", null);
+		return c.moveToFirst();
 	}
 
-	public static String getToken(SharedPreferences PREF) {
-		try {
-			return PREF.getString("TOKEN", null);
-		} catch (Exception EX) {
-			EX.printStackTrace();
+	public static String getToken(Context ctx) {
+		SQLiteDatabase db = new SQL(ctx).getWritableDatabase();
+		Cursor c = db.rawQuery("SELECT `TOKEN` FROM `ACCOUNT`;", null);
+		if (c.moveToFirst()) {
+			return c.getString(0);
+		} else {
 			return null;
 		}
 	}

@@ -146,7 +146,7 @@ public class LoginActivity extends AppCompatActivity {
 					}
 
 					String Token = Result.get("SESSION_ID").asText();
-					TokenManager.SetToken(Context, "", Token);
+					TokenManager.set_token(Context, "", Token);
 
 					//再起動
 					runOnUiThread(new Runnable() {

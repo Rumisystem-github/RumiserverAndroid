@@ -82,8 +82,7 @@ public class ForegroundService extends Service {
 	}
 
 	protected String getToken() {
-		SharedPreferences PREF = this.getSharedPreferences(TokenManager.PrefName, MODE_PRIVATE);
-		return TokenManager.getToken(PREF);
+		return TokenManager.getToken(Context);
 	}
 
 	public JsonNode getSession() {

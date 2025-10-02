@@ -16,23 +16,21 @@ import su.rumishistem.android.rumiserver.Module.UserIconManager;
 import su.rumishistem.android.rumiserver.R;
 
 public class MainActivity extends AppCompatActivity {
-	private MainActivity Context;
+	private MainActivity ctx;
 
 	@Override
 	protected void onCreate(Bundle SavedInstanceState) {
 		super.onCreate(SavedInstanceState);
 
-		Context = this;
+		ctx = this;
 
 		//UI
 		//getSupportActionBar().hide();
 		setContentView(R.layout.main_activity);
 
-		SharedPreferences PREF = Context.getSharedPreferences(TokenManager.PrefName, Context.MODE_PRIVATE);
-
 		//初回起動時か？
-		if (!TokenManager.isLogin(PREF)) {
-			Intent LoginIntent = new Intent(Context, WelcomeActivity.class);
+		if (!TokenManager.is_logined(ctx)) {
+			Intent LoginIntent = new Intent(ctx, WelcomeActivity.class);
 			LoginIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 			startActivity(LoginIntent);
 			finish();
@@ -42,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
 		//サービスが起動して居なければ起動する
 		if (!isServiceRunning(ForegroundService.class)) {
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-				ContextCompat.startForegroundService(Context, new Intent(this, ForegroundService.class));
+				ContextCompat.startForegroundService(ctx, new Intent(this, ForegroundService.class));
 			} else {
 				startService(new Intent(this, ForegroundService.class));
 			}
@@ -52,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
 		UserIconManager.Init();
 
 		//ホーム画面を開く
-		Intent HomeIntent = new Intent(Context, HomeActivity.class);
+		Intent HomeIntent = new Intent(ctx, HomeActivity.class);
 		HomeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 		startActivity(HomeIntent);
 		finish();
@@ -60,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
 	//サービスが起動しているかチェック
 	public boolean isServiceRunning(Class<?> ServiceClass) {
-		ActivityManager Manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+		ActivityManager Manager = (ActivityManager) getSystemService(ctx.ACTIVITY_SERVICE);
 		for (ActivityManager.RunningServiceInfo Service:Manager.getRunningServices(Integer.MAX_VALUE)) {
 			if (ServiceClass.getName().equals(Service.service.getClassName())) {
 				return true;

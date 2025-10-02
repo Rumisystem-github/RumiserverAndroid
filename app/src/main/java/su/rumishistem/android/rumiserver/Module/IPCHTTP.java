@@ -40,8 +40,7 @@ public class IPCHTTP {
 			if (l2 == null) throw new Error("トークンを取得できませんでした");
 			if (!l2.startsWith("200")) throw new Error("トークンを取得できませんでした");*/
 
-			SharedPreferences PREF = ctx.getSharedPreferences(TokenManager.PrefName, MODE_PRIVATE);
-			return TokenManager.getToken(PREF);
+			return TokenManager.getToken(ctx);
 		} catch (Exception EX) {
 			EX.printStackTrace();
 			throw new Error("トークンを取得できませんでした");
